@@ -5,7 +5,7 @@ RUN apk add --update --no-cache python libsodium supervisor \
     && rm -rf /var/cache/apk/*
 
 ENV RUN_ROOT=/ssr
-ARG SSR_VER=3.2.0
+ARG SSR_VER=3.2.1
 ARG SSR_URL=https://github.com/shadowsocksrr/shadowsocksr/archive/${SSR_VER}.tar.gz
 ARG KCP_VER=20170904
 ARG KCP_URL=https://github.com/xtaci/kcptun/releases/download/v${KCP_VER}/kcptun-linux-amd64-${KCP_VER}.tar.gz
@@ -25,7 +25,7 @@ RUN mkdir -p ${RUN_ROOT}/kcptun \
     && mv server_* server
 
 ENV SSR=ssr://origin:aes-256-cfb:tls1.2_ticket_auth_compatible:12345678 \
-    SSR_REDIRECT='["bing.com","cloudflare.com:443"]' \
+    SSR_REDIRECT='["bing.com:80","www.alibaba.co.jp:80","cloudflare.com:443"]' \
     SSR_OBFS_PARAM=bing.com \
     SSR_PROTOCOL_PARAM=''
 
@@ -37,4 +37,4 @@ EXPOSE 8388/tcp 8388/udp 18388/udp
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
